@@ -4,12 +4,12 @@ import Foundation
 ///
 /// - IPv6: An Internet Address of type IPv6 (e.g.: '::1').
 /// - IPv4: An Internet Address of type IPv4 (e.g.: '127.0.0.1').
-enum InternetAddress: Hashable {
+public enum InternetAddress: Hashable {
     case ipv6(sockaddr_in6)
     case ipv4(sockaddr_in)
 
     /// Human readable host represetnation (e.g. '192.168.1.1' or 'ab:ab:ab:ab:ab:ab:ab:ab').
-    var host: String? {
+    public var host: String? {
         switch self {
         case .ipv6(var address):
             var buffer = [CChar](repeating: 0, count: Int(INET6_ADDRSTRLEN))
@@ -24,7 +24,7 @@ enum InternetAddress: Hashable {
     }
 
     /// The protocol family that should be used on the socket creation for this address.
-    var family: Int32 {
+    public var family: Int32 {
         switch self {
         case .ipv4:
             return PF_INET
@@ -34,7 +34,7 @@ enum InternetAddress: Hashable {
         }
     }
 
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(self.host)
     }
 
@@ -71,7 +71,7 @@ enum InternetAddress: Hashable {
 }
 
 /// Compare InternetAddress(es) by making sure the host representation are equal.
-func == (lhs: InternetAddress, rhs: InternetAddress) -> Bool {
+public func == (lhs: InternetAddress, rhs: InternetAddress) -> Bool {
     return lhs.host == rhs.host
 }
 
